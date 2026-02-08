@@ -13,9 +13,7 @@ def register_admin(app):
         extra = int(parts[1]) if len(parts) > 1 else 15
 
         game.join_end_time += extra
-        game.join_extended += extra
-
-        await msg.reply(f"⏳ Joining time extended by {extra} sec! Total left: {int(game.join_end_time - time.time())} sec")
+        await msg.reply(f"Joining time extended by {extra} sec! Total left: {int(game.join_end_time - time.time())} sec")
 
     @app.on_message(filters.group & filters.command("cancel"))
     async def cancel(_, msg):
