@@ -14,3 +14,8 @@ def vote_kb(players):
         [InlineKeyboardButton(p.name, callback_data=f"v_{p.user_id}")]
         for p in players.values()
     ])
+
+def join_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("🎃 Join Game", callback_data="join_game")]
+    ])
