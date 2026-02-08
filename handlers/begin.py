@@ -3,20 +3,16 @@ from core.state import game
 from utils.text import ROUND_DM_TEXT
 from utils.keyboards import dm_options_keyboard
 
-
 def register_begin(app):
 
     @app.on_message(filters.group & filters.command("begin"))
     async def begin(_, msg):
-
         if game.phase != "ready":
-            await msg.reply("🕯 You cannot begin yet.")
-            return
+            return await msg.reply("🕯 You cannot begin yet.")
 
         if len(game.players) < 3:
-            await msg.reply("🕯 Not enough players.")
-            return
-
+            return await msg.reply("🕯 Not enough players.")
+        
         game.phase = "round"
         game.round = 1
 
