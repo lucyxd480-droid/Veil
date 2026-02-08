@@ -17,7 +17,7 @@ def register_begin(app):
         game.round = 1
 
         await msg.reply(
-            f"🐺 **The game has begun!**\n"
+            f"👐🏻 **The game has begun!**\n"
             f"👥 Players: {len(game.players)}\n"
             f"🔁 Round: {game.round}"
         )
