@@ -1,32 +1,23 @@
-import time
-
-
 class GameState:
-    def __init__(self, chat_id=None):
-        self.chat_id = chat_id
+    def __init__(self):
+        self.chat_id = None
+        self.players = {}        # user_id -> name
+        self.influence = {}      # user_id -> score
+        self.choices = {}        # user_id -> choice
+        self.votes = {}          # user_id -> votes
 
-        # lobby
-        self.players = {}
-        self.join_open = True
-        self.join_duration = 30
-        self.extend_duration = 15
-        self.join_end_time = time.time() + self.join_duration
-        self.extended = False
-
-        # game
-        self.active = False
-        self.round = 0
-        self.phase = "join"
-        self.choices = {}
-        self.votes = {}
-
-    def start_game(self):
-        self.active = True
-        self.phase = "game"
         self.round = 1
+        self.max_rounds = 3
+        self.trust_collapse = 0
+        self.choice_deadline = 0
+        self.active = False
 
-    def cancel(self):
-        self.__init__(None)
+    def reset_round(self):
+        self.choices.clear()
+        self.votes.clear()
+        self.round += 1
 
+    def reset_game(self):
+        self.__init__()
 
 game = GameState()
