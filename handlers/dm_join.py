@@ -24,7 +24,6 @@ def register_dm_join(app):
 
         await message.reply(DM_JOIN_TEXT)
 
-        # Update group player list
         players = "\n".join(f"• {n}" for n in game.players.values())
         await app.send_message(
             game.chat_id,
