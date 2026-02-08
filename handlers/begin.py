@@ -1,33 +1,33 @@
-from pyrogram import filters
+import asyncio, time
 from core.state import game
-from utils.text import ROUND_DM_TEXT
-from utils.keyboards import dm_options_keyboard
 
-def register_begin(app):
+async def join_timer(app):
+    while game.join_open:
+        remaining = int(game.join_end_time - time.time())
 
-    @app.on_message(filters.group & filters.command("begin"))
-    async def begin(_, msg):
-        if game.phase != "ready":
-            return await msg.reply("🕯 You cannot begin yet.")
+        if remaining in (15, 10, 5):
+            await app.send_message(
+                game.chat_id,
+                f"⏳ {remaining} seconds left to join!"
+            )
 
-        if len(game.players) < 3:
-            return await msg.reply("🕯 Not enough players.")
-        
-        game.phase = "round"
-        game.round = 1
-
-        await msg.reply(
-            f"👐🏻 **The game has begun!**\n"
-            f"👥 Players: {len(game.players)}\n"
-            f"🔁 Round: {game.round}"
-        )
-
-        for user_id in game.players:
-            try:
+        if remaining <= 0:
+            if len(game.players) < 3:
+                game.join_open = False
+                game.phase = "idle"
                 await app.send_message(
-                    user_id,
-                    ROUND_DM_TEXT,
-                    reply_markup=dm_options_keyboard()
+                    game.chat_id,
+                    "🕯 Not enough players. Cancelling game..."
                 )
-            except:
-                pass
+                return
+
+            game.join_open = False
+            game.phase = "ready"
+            await app.send_message(
+                game.chat_id,
+                f"🔒 Joining closed! {len(game.players)} players joined.\n"
+                f"Admin can now begin the game with /begin"
+            )
+            return
+
+        await asyncio.sleep(1)
