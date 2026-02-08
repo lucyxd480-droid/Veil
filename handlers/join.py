@@ -5,6 +5,9 @@ from pyrogram import filters
 from core.state import game
 
 
+MIN_PLAYERS = 6
+
+
 def register_join(app):
     """
     Registers /join command and starts join timer
@@ -23,7 +26,7 @@ def register_join(app):
             await message.reply("😈 You already joined.")
             return
 
-        # first join → set chat_id
+        # first join → set chat_id & start timer
         if game.chat_id is None:
             game.chat_id = chat_id
             asyncio.create_task(monitor_join_time(app))
@@ -32,7 +35,7 @@ def register_join(app):
 
         await message.reply(
             f"✅ {user.first_name} joined the game!\n"
-            f"👥 Total players: {len(game.players)}"
+            f"👥 Total players: {len(game.players)}/{MIN_PLAYERS}"
         )
 
 
@@ -45,8 +48,8 @@ async def monitor_join_time(app):
         remaining = int(game.join_end_time - time.time())
 
         if remaining <= 0:
-            # extend join time ONCE if players < 5 (example)
-            if not game.extended and len(game.players) < 5:
+            # extend join time ONCE if not enough players
+            if not game.extended and len(game.players) < MIN_PLAYERS:
                 game.extended = True
                 game.join_end_time = time.time() + game.extend_duration
 
@@ -59,11 +62,24 @@ async def monitor_join_time(app):
             else:
                 game.join_open = False
 
-                await app.send_message(
-                    game.chat_id,
-                    f"🔒 **Joining closed!**\n"
-                    f"👥 Players joined: {len(game.players)}"
-                )
+                # ✅ START GAME if enough players
+                if len(game.players) >= MIN_PLAYERS:
+                    game.start_game()
+
+                    await app.send_message(
+                        game.chat_id,
+                        "🎮 **Game Started!**\n"
+                        f"👥 Players: {len(game.players)}\n"
+                        f"🔁 Round: {game.round}"
+                    )
+
+                else:
+                    await app.send_message(
+                        game.chat_id,
+                        f"❌ **Game cancelled**\n"
+                        f"Not enough players ({len(game.players)}/{MIN_PLAYERS})"
+                    )
+
                 break
 
         await asyncio.sleep(1)
