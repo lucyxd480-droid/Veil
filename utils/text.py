@@ -5,7 +5,6 @@ START_TEXT = (
     "Click below if you dare to enter."
 )
 
-
 DM_JOIN_TEXT = (
     "🕯 **You crossed the Veil.**\n\n"
     "Your name is now a shadow among others.\n"
@@ -14,15 +13,13 @@ DM_JOIN_TEXT = (
     "_Wait. Observe. Decide._"
 )
 
-
 ROUND_DM_TEXT = (
-    "🕯 **A choice stands before you.**\n\n"
-    "🕊 Trust — believe someone else will too.\n"
-    "🗡 Betray — assume trust is a weakness.\n"
-    "🌑 Stay Silent — say nothing, risk nothing.\n\n"
+    "🔹 **A choice stands before you.**\n\n"
+    "🔹 Trust — believe someone else will too.\n"
+    "🔹 Betray — assume trust is a weakness.\n"
+    "🔹 Stay Silent — say nothing, risk nothing.\n\n"
     "_You have 40 seconds._"
 )
-
 
 GROUP_ROUND_RESULT = [
     "🕯 A silence lingered longer than expected…",
@@ -30,7 +27,6 @@ GROUP_ROUND_RESULT = [
     "🕯 A betrayal passed unnoticed.",
     "🕯 Doubt spread quietly through the group."
 ]
-
 
 END_TRUST = (
     "🕯 **The Veil Falls**\n\n"
