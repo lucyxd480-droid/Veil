@@ -1,9 +1,10 @@
-import asyncio, time
+import asyncio, time, random
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from core.state import game
 from handlers.voting import start_voting
 from handlers.endgame import check_end
+from utils.text import GROUP_ROUND_RESULT
 
 CHOICE_TIME = 40
 
@@ -40,26 +41,11 @@ async def start_round(app):
 
     await asyncio.sleep(CHOICE_TIME)
 
-    # auto silent for no choice
     for uid in game.players:
         if uid not in game.choices:
             game.choices[uid] = "silent"
 
-    await reveal(app)
-
-async def reveal(app):
-    values = list(game.choices.values())
-    trust = values.count("trust")
-    betray = values.count("betray")
-    silent = values.count("silent")
-
-    if betray > trust or silent >= trust:
-        game.trust_collapse += 1
-        text = "🔴 The Veil shifts..."
-    else:
-        game.trust_collapse = 0
-        text = "🟢 Some trust held strong."
-
+    text = random.choice(GROUP_ROUND_RESULT)
     await app.send_message(game.chat_id, f"🕯 Round {game.round} results:\n{text}")
 
     if check_end(app):
