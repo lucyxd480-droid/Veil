@@ -1,16 +1,28 @@
-from pyrogram import filters
-from models.player import Player
-from core.engine import GAMES
+import asyncio
+import time
+from core.state import game
 
-def register_join(app):
+async def monitor_join_time(chat_id):
+    while game.join_open:
+        remaining = int(game.join_end_time - time.time())
 
-    @app.on_message(filters.command("join") & filters.group)
-    async def join(_, msg):
-        state = GAMES.get(msg.chat.id)
-        if not state or state.active:
-            return
+        if remaining <= 0:
+            if not game.extended and len(game.players) >= 3:
+                game.extended = True
+                game.join_end_time = time.time() + game.extend_duration
 
-        user = msg.from_user
-        if user.id not in state.players:
-            state.players[user.id] = Player(user.id, user.first_name)
-            await msg.reply(f"{user.first_name} stepped behind the Veil.")
+                await app.send_message(
+                    chat_id,
+                    "⏳ **Joining time extended!**\n"
+                    "**15 seconds more to join** 👀"
+                )
+            else:
+                game.join_open = False
+                await app.send_message(
+                    chat_id,
+                    f"🔒 **Joining closed!**\n"
+                    f"👥 Players joined: {len(game.players)}"
+                )
+                break
+
+        await asyncio.sleep(1)
