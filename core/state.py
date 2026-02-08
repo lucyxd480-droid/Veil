@@ -1,23 +1,27 @@
+import time
+import asyncio
+
 class GameState:
     def __init__(self):
+        self.reset()
+
+    def reset(self):
+        # group info
         self.chat_id = None
-        self.players = {}        # user_id -> name
-        self.influence = {}      # user_id -> score
-        self.choices = {}        # user_id -> choice
-        self.votes = {}          # user_id -> votes
 
-        self.round = 1
-        self.max_rounds = 3
-        self.trust_collapse = 0
-        self.choice_deadline = 0
-        self.active = False
+        # players
+        self.players = {}  # user_id: name
 
-    def reset_round(self):
-        self.choices.clear()
-        self.votes.clear()
-        self.round += 1
+        # join phase
+        self.join_open = False
+        self.join_duration = 30
+        self.extend_duration = 15
+        self.join_end_time = None
+        self.extended = False
+        self.join_task = None
 
-    def reset_game(self):
-        self.__init__()
+        # game
+        self.round = 0
+        self.phase = "idle"
 
 game = GameState()
