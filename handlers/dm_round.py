@@ -1,19 +1,11 @@
 import asyncio, time, random
 from pyrogram import filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from core.state import game
 from handlers.voting import start_voting
 from handlers.endgame import check_end
 from utils.text import GROUP_ROUND_RESULT
 
 CHOICE_TIME = 40
-
-def dm_options_keyboard():
-    return InlineKeyboardMarkup([
-        [InlineKeyboardButton("🟢 Trust", callback_data="c_trust")],
-        [InlineKeyboardButton("🔴 Betray", callback_data="c_betray")],
-        [InlineKeyboardButton("⚫ Remain Silent", callback_data="c_silent")]
-    ])
 
 def register_dm_round(app):
 
@@ -33,6 +25,7 @@ async def start_round(app):
     game.choice_deadline = time.time() + CHOICE_TIME
 
     for uid in game.players:
+        from utils.keyboards import dm_options_keyboard
         await app.send_message(
             uid,
             f"🕯 Round {game.round}\nYou have {CHOICE_TIME} seconds to choose.",
