@@ -16,8 +16,7 @@ def register_dm_join(app):
             return
 
         if user.id in game.players:
-            await message.reply("🕯 You are already inside.")
-            return
+            return await message.reply("🕯 You are already inside.")
 
         game.players[user.id] = user.first_name or f"({user.id})"
         game.influence[user.id] = 100
