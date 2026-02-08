@@ -3,18 +3,14 @@ from core.state import game
 
 def start_voting(app):
     game.votes.clear()
-
     app.send_message(
         game.chat_id,
-        "🗳 **The Veil invites judgment**\n"
-        "Vote to weaken one presence.\n\n"
-        "Use: `/vote @username`"
+        "🗳 Voting phase! Use `/vote @username`"
     )
-
 
 def register_voting(app):
 
-    @app.on_message(filters.command("vote") & filters.group)
+    @app.on_message(filters.group & filters.command("vote"))
     async def vote(_, msg):
         if not msg.entities or len(msg.entities) < 2:
             return await msg.reply("Invalid vote.")
@@ -24,4 +20,4 @@ def register_voting(app):
             return await msg.reply("Invalid target.")
 
         game.influence[target.id] -= 20
-        await msg.reply("🕯 Judgment has been cast.")
+        await msg.reply(f"🕯 Judgment cast on {target.first_name}")
