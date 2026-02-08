@@ -1,32 +1,25 @@
 from pyrogram import filters
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from core.state import game
-
-MIN_PLAYERS = 6
-
 
 def register_start(app):
 
-    @app.on_message(filters.command("start"))
-    async def start_handler(client, message):
+    @app.on_message(filters.command("start") & filters.group)
+    async def group_start(_, msg):
+        game.chat_id = msg.chat.id
 
-        if game.active:
-            await message.reply("🎮 Game already started.")
-            return
+        keyboard = InlineKeyboardMarkup([
+            [
+                InlineKeyboardButton(
+                    "🕯 Click to Join The Veil",
+                    url="https://t.me/Veiltestrobot?start=veil_join"
+                )
+            ]
+        ])
 
-        if game.join_open:
-            await message.reply("⏳ Joining is still open.")
-            return
-
-        if len(game.players) < MIN_PLAYERS:
-            await message.reply(
-                f"❌ Not enough players ({len(game.players)}/{MIN_PLAYERS})"
-            )
-            return
-
-        game.start_game()
-
-        await message.reply(
-            "🐺 **The game has begun!**\n"
-            f"👥 Players: {len(game.players)}\n"
-            f"🔁 Round: {game.round}"
+        await msg.reply(
+            "🕯 **The Veil is forming…**\n\n"
+            "Tap below to step inside.\n"
+            "_Your choice will remain unseen._",
+            reply_markup=keyboard
         )
