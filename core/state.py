@@ -1,7 +1,8 @@
 import time
 
+
 class GameState:
-    def __init__(self, chat_id):
+    def __init__(self, chat_id=None):
         self.chat_id = chat_id
 
         # lobby
@@ -18,3 +19,10 @@ class GameState:
         self.phase = "join"
         self.choices = {}
         self.votes = {}
+
+    def reset(self):
+        self.__init__(self.chat_id)
+
+
+
+game = GameState()
