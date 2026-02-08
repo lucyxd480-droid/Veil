@@ -6,22 +6,14 @@ def check_end(app):
         end(app, winner)
         return True
 
-    game.reset_round()
+    game.round += 1
     return False
-
 
 def end(app, winner):
     if winner:
-        text = (
-            "🕯 **The Veil Falls…**\n\n"
-            f"🏆 **Winner:** {game.players[winner]}\n"
-            "Belief endured longer than doubt."
-        )
+        text = f"🏆 Winner: {game.players[winner]}"
     else:
-        text = (
-            "🕯 **The Veil Falls…**\n\n"
-            "No presence stood firm.\nNo winner emerged."
-        )
+        text = "No winner emerged."
 
     app.send_message(game.chat_id, text)
-    game.reset_game()
+    game.reset()
