@@ -20,10 +20,7 @@ def register_start(app):
         game.join_end_time = time.time() + game.join_duration
 
         await msg.reply(
-            f"✨ **A new Veil game has been started by {msg.from_user.first_name}!**\n"
-            f"🎯 Come join and prove your presence!\n\n"
-            f"#Players: 0\n\n"
-            f"Click Join below to enter!",
+            START_TEXT,
             reply_markup=join_keyboard()
         )
 
