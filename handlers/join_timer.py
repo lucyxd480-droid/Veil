@@ -4,9 +4,6 @@ from core.state import game
 
 
 async def start_join_timer(app, chat_id):
-    game.chat_id = chat_id
-    game.join_open = True
-    game.phase = "join"
     game.join_end_time = time.time() + game.join_duration
 
     while game.join_open:
@@ -23,9 +20,11 @@ async def start_join_timer(app, chat_id):
                 )
             else:
                 game.join_open = False
+                game.phase = "ready"
+
                 await app.send_message(
                     chat_id,
-                    "🔒 **Joining closed.**\nGame will begin."
+                    "🔒 **Joining closed.**\nAdmin may begin the game."
                 )
                 break
 
