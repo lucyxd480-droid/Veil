@@ -1,4 +1,5 @@
 import asyncio
+import time
 from core.influence import apply_choice
 from core.disclosure import disclosure
 from utils.keyboards import decision_kb, vote_kb
@@ -7,6 +8,33 @@ from config import ROUND_TIME, VOTE_TIME, MAX_ROUNDS
 GAMES = {}  # chat_id -> GameState
 
 async def run_game(app, state):
+    # 🐺 JOIN PHASE
+    while state.join_open:
+        remaining = int(state.join_end_time - time.time())
+
+        if remaining <= 0:
+            if not state.extended and len(state.players) >= 3:
+                state.extended = True
+                state.join_end_time = time.time() + state.extend_duration
+
+                await app.send_message(
+                    state.chat_id,
+                    "⏳ **Joining time extended!**\n"
+                    "**15 seconds more to join** 👀"
+                )
+            else:
+                state.join_open = False
+                break
+
+        await asyncio.sleep(1)
+
+    # ❌ Not enough players
+    if len(state.players) < 3:
+        await app.send_message(state.chat_id, "🙂 Not enough players to start.")
+        GAMES.pop(state.chat_id, None)
+        return
+
+    # 🔥 NOW START YOUR EXISTING LOGIC
     state.active = True
 
     while state.round < MAX_ROUNDS:
