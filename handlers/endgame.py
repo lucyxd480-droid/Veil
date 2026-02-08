@@ -1,4 +1,5 @@
 from core.state import game
+from utils.text import END_TRUST, END_BETRAY, END_SILENT
 
 def check_end(app):
     if game.round > game.max_rounds or game.trust_collapse >= 2:
@@ -11,9 +12,9 @@ def check_end(app):
 
 def end(app, winner):
     if winner:
-        text = f"🏆 Winner: {game.players[winner]}"
+        end_text = END_TRUST
     else:
-        text = "No winner emerged."
+        end_text = END_SILENT
 
-    app.send_message(game.chat_id, text)
+    app.send_message(game.chat_id, end_text)
     game.reset()
