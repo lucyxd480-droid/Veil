@@ -1,37 +1,33 @@
-import asyncio
-import time
+import asyncio, time
 from core.state import game
 
-
-async def start_join_timer(app, chat_id):
-    game.join_end_time = time.time() + game.join_duration
-
+async def join_timer(app):
     while game.join_open:
         remaining = int(game.join_end_time - time.time())
 
-        if remaining <= 0:
-            if not game.extended:
-                game.extended = True
-                game.join_end_time = time.time() + game.extend_duration
-
-                await app.send_message(
-                    chat_id,
-                    "⏳ **Joining time extended!**\n15 seconds more…"
-                )
-            else:
-                game.join_open = False
-                game.phase = "ready"
-
-                await app.send_message(
-                    chat_id,
-                    "🔒 **Joining closed.**\nAdmin may begin the game."
-                )
-                break
-
-        elif remaining in (15, 10, 5):
+        if remaining in (15, 10, 5):
             await app.send_message(
-                chat_id,
-                f"⏳ {remaining} seconds left to join…"
+                game.chat_id,
+                f"⏳ {remaining} seconds left to join!"
             )
+
+        if remaining <= 0:
+            if len(game.players) < 3:
+                game.join_open = False
+                game.phase = "idle"
+                await app.send_message(
+                    game.chat_id,
+                    "🕯 Not enough players. Cancelling game..."
+                )
+                return
+
+            game.join_open = False
+            game.phase = "ready"
+            await app.send_message(
+                game.chat_id,
+                f"🔒 Joining closed! {len(game.players)} players joined.\n"
+                f"Admin can now begin the game with /begin"
+            )
+            return
 
         await asyncio.sleep(1)
