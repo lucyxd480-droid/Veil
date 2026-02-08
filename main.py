@@ -3,8 +3,9 @@ from config import API_ID, API_HASH, BOT_TOKEN
 
 from handlers.start import register_start
 from handlers.dm_join import register_dm_join
-from handlers.dm_round import register_dm_round
-from handlers.voting import register_voting
+from handlers.admin import register_admin
+from handlers.begin import register_begin
+
 
 app = Client(
     "veil",
@@ -15,7 +16,7 @@ app = Client(
 
 register_start(app)
 register_dm_join(app)
-register_dm_round(app)
-register_voting(app)
+register_admin(app)
+register_begin(app)
 
 app.run()
