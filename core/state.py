@@ -20,9 +20,17 @@ class GameState:
         self.choices = {}
         self.votes = {}
 
+    def start_game(self):
+        """Start the actual game"""
+        self.active = True
+        self.phase = "game"
+        self.round = 1
+        self.choices.clear()
+        self.votes.clear()
+
     def reset(self):
         self.__init__(self.chat_id)
 
 
-
+# global shared state
 game = GameState()
