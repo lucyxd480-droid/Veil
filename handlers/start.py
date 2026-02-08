@@ -1,25 +1,27 @@
 from pyrogram import filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from core.state import game
+from utils.keyboards import join_keyboard
+from utils.text import START_TEXT
+from handlers.join_timer import start_join_timer
+import asyncio
+
 
 def register_start(app):
 
-    @app.on_message(filters.command("start") & filters.group)
-    async def group_start(_, msg):
-        game.chat_id = msg.chat.id
+    @app.on_message(filters.group & filters.command("start"))
+    async def start_group(client, message):
+        if game.join_open:
+            await message.reply("🕯 A game is already forming.")
+            return
 
-        keyboard = InlineKeyboardMarkup([
-            [
-                InlineKeyboardButton(
-                    "🕯 Click to Join The Veil",
-                    url="https://t.me/Veiltestrobot?start=veil_join"
-                )
-            ]
-        ])
+        game.reset()
+        game.join_open = True
 
-        await msg.reply(
-            "🕯 **The Veil is forming…**\n\n"
-            "Tap below to step inside.\n"
-            "_Your choice will remain unseen._",
-            reply_markup=keyboard
+        await message.reply(
+            START_TEXT,
+            reply_markup=join_keyboard()
+        )
+
+        asyncio.create_task(
+            start_join_timer(app, message.chat.id)
         )
