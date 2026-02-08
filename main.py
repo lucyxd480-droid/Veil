@@ -1,10 +1,10 @@
 from pyrogram import Client
-from config import BOT_TOKEN, API_ID, API_HASH
+from config import API_ID, API_HASH, BOT_TOKEN
 
-from handlers.join import register_join
 from handlers.start import register_start
-from handlers.admin import register_admin
-
+from handlers.dm_join import register_dm_join
+from handlers.dm_round import register_dm_round
+from handlers.voting import register_voting
 
 app = Client(
     "veil",
@@ -13,8 +13,9 @@ app = Client(
     bot_token=BOT_TOKEN
 )
 
-register_join(app)
 register_start(app)
-register_admin(app)
+register_dm_join(app)
+register_dm_round(app)
+register_voting(app)
 
 app.run()
