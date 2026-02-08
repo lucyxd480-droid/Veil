@@ -6,7 +6,8 @@ class GameState:
 
     def reset(self):
         self.chat_id = None
-        self.players = {}        
+        self.players = {}        # user_id: name
+        self.influence = {}      # user_id: points
         self.join_open = False
         self.join_duration = 60
         self.join_end_time = None
@@ -15,7 +16,6 @@ class GameState:
         self.round = 0
         self.choices = {}        
         self.votes = {}          
-        self.influence = {}      
         self.trust_collapse = 0
         self.max_rounds = 5
 
