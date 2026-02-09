@@ -4,7 +4,7 @@ def join_keyboard(bot_username: str):
     return InlineKeyboardMarkup([
         [InlineKeyboardButton(
             "Join The Veil",
-            url=f"https://t.me/@Veiltestrobot?start=join"
+            url=f"https://t.me/{bot_username}?start=join"  # use passed username
         )]
     ])
 
