@@ -1,3 +1,4 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
 diff --git a/handlers/join_timer.py b/handlers/join_timer.py
 index 35da6731363666b3cb8558ae6daf66270f14dcd5..ff0ad3628eb51bb4cdbd4157223b811dedc2641c 100644
 --- a/handlers/join_timer.py
@@ -53,3 +54,6 @@ index 35da6731363666b3cb8558ae6daf66270f14dcd5..ff0ad3628eb51bb4cdbd4157223b811d
              return
  
          await asyncio.sleep(1)
+ 
+EOF
+)
