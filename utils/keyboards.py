@@ -1,15 +1,12 @@
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-BOT_USERNAME = "Veiltestrobot"  # your bot username
-
-def join_keyboard():
+def join_keyboard(bot_username: str):
     return InlineKeyboardMarkup([
         [InlineKeyboardButton(
             "Join The Veil",
-            url=f"https://t.me/{BOT_USERNAME}?start=join"
+            url=f"https://t.me/@Veiltestrobot?start=join"
         )]
     ])
-
 
 def dm_options_keyboard():
     return InlineKeyboardMarkup([
