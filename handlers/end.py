@@ -1,13 +1,11 @@
-from core.leaderboard import add_win
-from utils.texts import END_TEXT
+from pyrogram import filters
+from core.state import games
+from core.narrator import whisper
 
-async def end_game(app, game):
-    winner = next(iter(game.alive))
-    add_win(winner)
 
-    await app.send_message(
-        game.chat_id,
-        f"{END_TEXT}\n👑 Winner: {game.players[winner]}"
-    )
-
-    game.reset()
+def register_end(app):
+    @app.on_message(filters.command("endgame") & filters.group)
+    async def end(_, msg):
+        chat = msg.chat.id
+        games.pop(chat, None)
+        await msg.reply(f"🕯 THE VEIL FALLS.\n{whisper()}")
