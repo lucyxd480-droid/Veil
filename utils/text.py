@@ -1,36 +1,16 @@
-START_TEXT = (
-    "🕯 **A new Veil game has been started by {host}!**\n\n"
-    "Shadows are gathering... enter if you dare.\n"
-    "Click **Join The Veil** below to jump into bot DM and join instantly."
+INTRO = (
+    "🕯 **THE VEIL OPENS**\n\n"
+    "More masks.\nMore lies.\nMore blood."
 )
 
-DM_JOIN_TEXT = (
-    "🕯 **You crossed the Veil.**\n\n"
-    "Your name is now a shadow among others.\n"
-    "Wait for round start in group..."
-)
+ROLE_TEXT = {
+    "traitor": "🩸 You are TRAITOR.\nKill quietly.",
+    "innocent": "🤍 You are INNOCENT.\nSurvive.",
+    "guardian": "🛡 You are GUARDIAN.\nSave once.",
+    "watcher": "👀 You are WATCHER.\nYou sense betrayal.",
+    "jester": "🐍 You are JESTER.\nDie by vote to win.",
+    "judge": "⚖ You are JUDGE.\nYour vote counts double.",
+    "shadow": "🕶 You are SHADOW.\nImmune once."
+}
 
-GROUP_ROUND_RESULT = [
-    "🕯 Tension rises. No one is fully trusted.",
-    "🕯 Whispers spread. Someone moved in silence.",
-    "🕯 A risky trust changed the mood.",
-    "🕯 Betrayal leaves marks, even when unseen."
-]
-
-END_TRUST = (
-    "🕯 **The Veil Falls**\n\n"
-    "Trust survived the darkness.\n"
-    "A fragile peace wins tonight."
-)
-
-END_BETRAY = (
-    "🕯 **The Veil Falls**\n\n"
-    "Betrayal consumed the circle.\n"
-    "Only suspicion remains."
-)
-
-END_SILENT = (
-    "🕯 **The Veil Falls**\n\n"
-    "Silence swallowed every voice.\n"
-    "No one truly wins."
-)
+END_TEXT = "🩸 **THE VEIL HAS CLOSED** 🩸"
