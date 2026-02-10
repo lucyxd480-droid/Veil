@@ -1,14 +1,14 @@
 import random
 
-
 LINES = [
-"The dead were smiling.",
-"Someone is lying.",
-"Fear grows in silence.",
-"Truth bends tonight.",
-"Not everything you see is real."
+    "A shadow moves where no one is watching.",
+    "Someone lies. Someone listens.",
+    "The night breathes quietly.",
+    "Fear grows louder in silence.",
+    "Not everyone here is innocent.",
+    "Darkness remembers your name."
 ]
 
 
 def whisper():
-return random.choice(LINES)
+    return random.choice(LINES)
