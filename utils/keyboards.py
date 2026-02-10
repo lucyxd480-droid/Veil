@@ -1,26 +1,20 @@
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
+def join_kb():
+    return InlineKeyboardMarkup([[InlineKeyboardButton("🕯 Join Veil", callback_data="join")]])
 
-def join_keyboard(bot_username: str):
-    return InlineKeyboardMarkup([
-        [
-            InlineKeyboardButton(
-                "Join The Veil",
-                url=f"https://t.me/{bot_username}?start=join"
-            )
-        ]
-    ])
+def enter_kb():
+    return InlineKeyboardMarkup([[InlineKeyboardButton("🕯 Enter Veil (DM)", callback_data="enter")]])
 
+def choice_kb():
+    return InlineKeyboardMarkup([[
+        InlineKeyboardButton("🤍 Trust", callback_data="trust"),
+        InlineKeyboardButton("🩸 Betray", callback_data="betray"),
+        InlineKeyboardButton("🤫 Silent", callback_data="silent"),
+    ]])
 
-def dm_options_keyboard():
-    return InlineKeyboardMarkup([
-        [InlineKeyboardButton("Trust", callback_data="c_trust")],
-        [InlineKeyboardButton("Betray", callback_data="c_betray")],
-        [InlineKeyboardButton("Remain Silent", callback_data="c_silent")]
-    ])
-
-
-def enter_veil_keyboard(label: str = "Enter Veil"):
-    return InlineKeyboardMarkup([
-        [InlineKeyboardButton(label, callback_data="enter_veil")]
-    ])
+def vote_kb(players):
+    return InlineKeyboardMarkup(
+        [[InlineKeyboardButton(name, callback_data=f"vote_{uid}")]
+         for uid, name in players.items()]
+    )
