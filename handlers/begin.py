@@ -1,17 +1,22 @@
 from pyrogram import filters
-from core.state import games, GameState
-from utils.texts import INTRO
+from core.state import games
 from utils.keyboards import join_kb
+from config import JOIN_TIME
+import asyncio
 
-def register_begin(app):
-    @app.on_message(filters.command("begin") & filters.group)
-    async def begin(_, msg):
-        chat_id = msg.chat.id
-        if chat_id in games and games[chat_id].active:
-            return await msg.reply("Game already running.")
 
-        game = GameState(chat_id)
-        game.active = True
-        games[chat_id] = game
 
-        await msg.reply(INTRO, reply_markup=join_kb())
+
+def register_start(app):
+@app.on_message(filters.command("startgame") & filters.group)
+async def start(_, msg):
+chat = msg.chat.id
+games[chat].clear()
+games[chat]["players"] = {}
+games[chat]["phase"] = "join"
+
+
+await msg.reply(
+"🕯 THE VEIL OPENS...\nJoin within 60 seconds.",
+reply_markup=join_kb()
+)
