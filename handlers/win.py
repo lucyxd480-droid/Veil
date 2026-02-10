@@ -1,16 +1,16 @@
 from pyrogram import filters
-from core.state import games
 from core.wincheck import check_win
 
+
 def register_win(app):
+
     @app.on_message(filters.command("win") & filters.group)
-    async def win(_, msg):
-        chat = msg.chat.id
-        game = games.get(chat)
+    async def win_handler(_, msg):
+        result = check_win(msg.chat.id)
 
-        if not game:
-            return
-
-        result = check_win(game["alive"], game["roles"])
-        if result:
-            await msg.reply(f"🏁 {result} WINS")
+        if result == "innocents":
+            await msg.reply("🤍 Innocents have won the game.")
+        elif result == "traitors":
+            await msg.reply("🩸 Evil has consumed the town.")
+        else:
+            await msg.reply("🕯 The game is still ongoing.")
