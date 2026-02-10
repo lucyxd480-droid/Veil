@@ -1,10 +1,9 @@
-import os
-from dotenv import load_dotenv
+API_ID = 123456
+API_HASH = "API_HASH"
+BOT_TOKEN = "BOT_TOKEN"
 
-load_dotenv()
+MIN_PLAYERS = 6
+CHOICE_TIME = 30
+VOTE_TIME = 25
 
-API_ID = int(os.getenv("API_ID"))
-API_HASH = os.getenv("API_HASH")
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-
-ROUND_TIME = 40
+TRAITOR_RATIO = 4
