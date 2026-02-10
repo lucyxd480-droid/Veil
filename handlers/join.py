@@ -1,4 +1,4 @@
-from pyrogram import filters
+lfrom pyrogram import filters
 from pyrogram.types import CallbackQuery
 from core.state import games
 
@@ -11,8 +11,8 @@ def register_join(app):
         user = cb.from_user
 
         game = games.setdefault(chat_id, {
-            "players": [],
-            "alive": [],
+            "players": {},
+            "alive": set(),
             "roles": {}
         })
 
@@ -20,8 +20,8 @@ def register_join(app):
             await cb.answer("You already joined.", show_alert=True)
             return
 
-        game["players"].append(user.id)
-        game["alive"].append(user.id)
+        game["players"][user.id] = {"alive": True}
+        game["alive"].add(user.id)
 
         await client.send_message(
             chat_id,
