@@ -1,18 +1,22 @@
-from core.state import game
+from core.state import games
 
 
-def check_win():
+def check_win(chat_id):
     """
-    Basic win condition:
-    - Traitors win if innocents <= traitors
-    - Innocents win if no traitor alive
+    Win conditions per group (chat)
     """
+
+    game = games.get(chat_id)
+    if not game:
+        return None
 
     alive = game.get("alive", [])
     roles = game.get("roles", {})
 
-    traitors = [u for u in alive if roles.get(u) in ["traitor", "assassin", "cultist", "zealot"]]
-    innocents = [u for u in alive if roles.get(u) not in ["traitor", "assassin", "cultist", "zealot"]]
+    evil_roles = ["traitor", "assassin", "cultist", "zealot", "mindbreaker"]
+
+    traitors = [u for u in alive if roles.get(u) in evil_roles]
+    innocents = [u for u in alive if roles.get(u) not in evil_roles]
 
     if not traitors:
         return "innocents"
