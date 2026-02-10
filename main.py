@@ -1,20 +1,29 @@
 from pyrogram import Client
-from config import API_ID, API_HASH, BOT_TOKEN
-from handlers.begin import register_begin
+from config import *
+from handlers.start import register_start
 from handlers.join import register_join
-from handlers.veil import register_veil
-from handlers.leaderboard import register_leaderboard
+from handlers.extend import register_extend
+from handlers.night import register_night
+from handlers.discussion import register_discussion
+from handlers.pick import register_pick
+from handlers.end import register_end
+
 
 app = Client(
-    "veil_v45",
-    api_id=API_ID,
-    api_hash=API_HASH,
-    bot_token=BOT_TOKEN
+"veil",
+api_id=API_ID,
+api_hash=API_HASH,
+bot_token=BOT_TOKEN
 )
 
-register_begin(app)
+
+register_start(app)
 register_join(app)
-register_veil(app)
-register_leaderboard(app)
+register_extend(app)
+register_night(app)
+register_discussion(app)
+register_pick(app)
+register_end(app)
+
 
 app.run()
