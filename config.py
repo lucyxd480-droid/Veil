@@ -1,8 +1,8 @@
-API_ID = 123456
-API_HASH = "YOUR_API_HASH"
-BOT_TOKEN = "YOUR_BOT_TOKEN"
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
-MIN_PLAYERS = 4
-JOIN_TIME = 60
-VOTE_TIME = 60
+API_ID = int(os.getenv("API_ID"))
+API_HASH = os.getenv("API_HASH")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
