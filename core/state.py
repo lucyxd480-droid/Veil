@@ -1,18 +1,12 @@
-class GameState:
-    def __init__(self, chat_id):
-        self.chat_id = chat_id
-        self.reset()
+from collections import defaultdict
 
-    def reset(self):
-        self.players = {}
-        self.alive = set()
-        self.roles = {}
-        self.choices = {}
-        self.votes = {}
-        self.round = 0
-        self.round_lock = False
-        self.active = False
-        self.guardian_used = False
-        self.shadow_used = set()
 
-games = {}
+games = defaultdict(lambda: {
+"players": {},
+"roles": {},
+"alive": set(),
+"phase": "idle",
+"timer": None,
+"picks": {},
+"role_sent": set()
+})
