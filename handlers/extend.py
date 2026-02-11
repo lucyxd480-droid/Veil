@@ -1,5 +1,7 @@
 from pyrogram import filters
+from core.flow import schedule_join_expiry
 from core.state import games
+
 
 def register_extend(app):
     @app.on_message(filters.command("extend") & filters.group)
@@ -12,7 +14,10 @@ def register_extend(app):
 
         try:
             extra = int(msg.command[1])
-        except:
+        except Exception:
             return await msg.reply("Usage: /extend 30")
 
-        await msg.reply(f"⏳ Join time extended by {extra} seconds.")
+        # Extend join time and reschedule
+        game["join_seconds"] += max(1, extra)
+        await schedule_join_expiry(app, chat, game["join_seconds"])
+        await msg.reply(f"⏳ Join timer reset and extended to {game['join_seconds']} seconds.")
