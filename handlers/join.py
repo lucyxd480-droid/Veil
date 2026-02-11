@@ -9,24 +9,23 @@ def register_join(app):
     async def join(client, cb: CallbackQuery):
         chat_id = cb.message.chat.id
         user = cb.from_user
-
-        # defaultdict se direct mil jayega
         game = games[chat_id]
 
+        # Only allow joining during the join phase
+        if game.get("phase") != "join":
+            await cb.answer("Join phase is closed.", show_alert=True)
+            return
+
+        # Check if already joined
         if user.id in game["players"]:
             await cb.answer("You already joined.", show_alert=True)
             return
 
-        # player add
-        game["players"][user.id] = {
-            "name": user.first_name,
-            "alive": True
-        }
+        # Add player
+        game["players"][user.id] = {"name": user.first_name, "alive": True}
         game["alive"].add(user.id)
 
         await client.send_message(
-            chat_id,
-            f"🕯 {user.first_name} joined the game."
+            chat_id, f"🕯 {user.first_name} joined the game. ({len(game['players'])} players)"
         )
-
-        await cb.answer()
+        await cb.answer("Joined!")
