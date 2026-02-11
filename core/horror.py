@@ -1,6 +1,5 @@
 import random
 
-
 HORROR_LINES = [
     "You feel watched.",
     "Your thoughts are not yours.",
@@ -10,4 +9,5 @@ HORROR_LINES = [
 
 
 def horror():
+    """Return a random horror narration line."""
     return random.choice(HORROR_LINES)
