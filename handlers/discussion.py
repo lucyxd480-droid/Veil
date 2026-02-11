@@ -1,4 +1,5 @@
 from pyrogram import filters
+from core.flow import start_discussion
 from core.state import games
 
 
@@ -9,11 +10,10 @@ def register_discussion(app):
         chat = msg.chat.id
         game = games.get(chat)
 
-        if not game:
+        # Only allow if game exists and has started
+        if not game or not game.get("started"):
             return
 
-        game["phase"] = "discussion"
-
-        await msg.reply(
-            "🧠 Discuss.\nJudgment is coming.\nChoose wisely."
-        )
+        # Trigger discussion phase
+        await start_discussion(app, chat)
+        await msg.reply("🧠 Discussion manually started.")
