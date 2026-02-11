@@ -1,27 +1,34 @@
+"""
+Win condition checker.
+Determines if either faction has won.
+"""
+
+from core.roles import EVIL
 from core.state import games
 
 
 def check_win(chat_id):
-    """
-    Win conditions per group (chat)
-    """
+    """Return 'innocents', 'traitors', or None."""
 
     game = games.get(chat_id)
-    if not game:
+    if not game or not game.get("started"):
         return None
 
-    alive = game.get("alive", [])
+    alive = set(game.get("alive", set()))
     roles = game.get("roles", {})
 
-    evil_roles = ["traitor", "assassin", "cultist", "zealot", "mindbreaker"]
+    if not alive:
+        return None  # Safety guard
 
-    traitors = [u for u in alive if roles.get(u) in evil_roles]
-    innocents = [u for u in alive if roles.get(u) not in evil_roles]
+    evil_alive = {uid for uid in alive if roles.get(uid) in EVIL}
+    good_alive = alive - evil_alive
 
-    if not traitors:
+    # Good wins if no evil remains
+    if not evil_alive:
         return "innocents"
 
-    if len(traitors) >= len(innocents):
+    # Evil wins if equal or majority
+    if len(evil_alive) >= len(good_alive):
         return "traitors"
 
     return None
